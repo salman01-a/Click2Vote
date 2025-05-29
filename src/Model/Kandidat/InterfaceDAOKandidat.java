@@ -4,10 +4,15 @@
  */
 package Model.Kandidat;
 
+import java.util.List;
+
 /**
  *
  * @author salmanfaris
  */
 public interface InterfaceDAOKandidat {
-    
+    public void insert(ModelKandidat kandidat);
+    public void update(ModelKandidat kandidat);
+    public void delete(int id);
+    public List<ModelKandidat> getAll();
 }
