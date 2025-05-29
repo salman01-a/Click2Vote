@@ -38,8 +38,9 @@ public class ControllerUser {
              
 
          if(nama != null){
-             JOptionPane.showMessageDialog(Login, "Berhasil Login");
-             
+             new View.User.Dashboard();
+             Login.dispose();
+
          }else{
              JOptionPane.showMessageDialog(Login, "Salah password");
          }     
