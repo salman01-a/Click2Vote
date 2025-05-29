@@ -22,7 +22,7 @@ public class Dashboard extends JFrame {
         Color hoverColor = new Color(140, 0, 190);
         navbar.setBackground(baseColor);
 
-        JLabel logo = new JLabel("GO VOTE");
+        JLabel logo = new JLabel("Click2Vote");
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
         logo.setBounds(20, 15, 100, 20);

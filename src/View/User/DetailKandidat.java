@@ -27,7 +27,7 @@ public class DetailKandidat extends JFrame {
         navbar.setPreferredSize(new Dimension(1100, 50));
         navbar.setBackground(new Color(111, 0, 162));
 
-        JLabel logo = new JLabel("GO VOTE");
+        JLabel logo = new JLabel("Click2Vote");
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
         logo.setBounds(20, 15, 100, 20);
