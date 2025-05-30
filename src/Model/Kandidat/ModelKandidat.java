@@ -9,8 +9,8 @@ package Model.Kandidat;
  * @author salmanfaris
  */
 public class ModelKandidat {
-    int id;
-    String nama,photo_url, description,no_urut;
+    private int id;
+    private String nama,photo_url, description,no_urut;
 
     public int getId() {
         return id;

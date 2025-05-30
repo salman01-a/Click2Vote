@@ -3,11 +3,131 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controller;
+import View.Admin.*;
+import Model.Kandidat.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author salmanfaris
  */
-public class ControllerKandidat {
-    
+
+   public class ControllerKandidat {
+    Kandidat2 view;
+    DAOKandidat dao;
+    String imagePath = "";
+
+    public ControllerKandidat(Kandidat2 view) {
+        this.view = view;
+        dao = new DAOKandidat();
+
+        loadTable();
+
+        view.btnInsert.addActionListener(e -> insert());
+        view.btnUpdate.addActionListener(e -> update());
+        view.btnDelete.addActionListener(e -> delete());
+        view.btnReset.addActionListener(e -> reset());
+        view.btnUpload.addActionListener(e -> uploadImage());
+
+        view.table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int row = view.table.getSelectedRow();
+                view.tfId.setText(view.table.getValueAt(row, 0).toString());
+                view.tfNama.setText(view.table.getValueAt(row, 1).toString());
+                view.tfPhotoUrl.setText(view.table.getValueAt(row, 2).toString());
+                view.tfDescription.setText(view.table.getValueAt(row, 3).toString());
+                view.tfNoUrut.setText(view.table.getValueAt(row, 4).toString());
+
+                String imgPath = view.table.getValueAt(row, 2).toString();
+                if (!imgPath.isEmpty()) {
+                    ImageIcon icon = new ImageIcon(new ImageIcon(imgPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                    view.lblImagePreview.setIcon(icon);
+                }
+            }
+        });
+    }
+
+    private void insert() {
+        ModelKandidat k = new ModelKandidat();
+        k.setNama(view.tfNama.getText());
+        k.setPhoto_url(view.tfPhotoUrl.getText());
+        k.setDescription(view.tfDescription.getText());
+        k.setNo_urut(view.tfNoUrut.getText());
+
+        dao.insert(k);
+        loadTable();
+        reset();
+    }
+
+    private void update() {
+        ModelKandidat k = new ModelKandidat();
+        k.setId(Integer.parseInt(view.tfId.getText()));
+        k.setNama(view.tfNama.getText());
+        k.setPhoto_url(view.tfPhotoUrl.getText());
+        k.setDescription(view.tfDescription.getText());
+        k.setNo_urut(view.tfNoUrut.getText());
+
+        dao.update(k);
+        loadTable();
+        reset();
+    }
+
+    private void delete() {
+        int id = Integer.parseInt(view.tfId.getText());
+        dao.delete(id);
+        loadTable();
+        reset();
+    }
+
+    private void reset() {
+        view.tfId.setText("");
+        view.tfNama.setText("");
+        view.tfPhotoUrl.setText("");
+        view.tfDescription.setText("");
+        view.tfNoUrut.setText("");
+        view.lblImagePreview.setIcon(null);
+    }
+
+    private void uploadImage() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg"));
+
+        int result = chooser.showOpenDialog(view);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+            String fileName = selectedFile.getName();
+            String destPath = "src/Assets/FotoKandidat/" + fileName;
+
+            try {
+                Files.copy(selectedFile.toPath(), new File(destPath).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                imagePath = destPath;
+                view.tfPhotoUrl.setText(destPath);
+
+                ImageIcon icon = new ImageIcon(new ImageIcon(destPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                view.lblImagePreview.setIcon(icon);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(view, "Gagal upload gambar.");
+            }
+        }
+    }
+
+    private void loadTable() {
+        List<ModelKandidat> list = dao.getAll();
+        DefaultTableModel model = (DefaultTableModel) view.table.getModel();
+        model.setRowCount(0);
+
+        for (ModelKandidat k : list) {
+            model.addRow(new Object[]{
+                k.getId(), k.getNama(), k.getPhoto_url(), k.getDescription(), k.getNo_urut()
+            });
+        }
+    }
 }

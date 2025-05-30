@@ -14,7 +14,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       new View.LoginPage();
+//        View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
+//        new Controller.ControllerKandidat(view);
+          new View.Admin.Dashboard2();
+    
     }
     
 }

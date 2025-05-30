@@ -19,7 +19,7 @@ public class DAOKandidat implements InterfaceDAOKandidat{
     @Override
     public void insert(ModelKandidat kandidat) {
         try {
-            String query = "INSERT INTO kandidat (nama, photo_url, description, no_urut) VALUES (?, ?, ?, ?);";
+            String query = "INSERT INTO candidates (name, photo_url, description, no_urut) VALUES (?, ?, ?, ?);";
             PreparedStatement stmt = Connector.Connect().prepareStatement(query);
             stmt.setString(1, kandidat.getNama());
             stmt.setString(2, kandidat.getPhoto_url());
@@ -35,7 +35,7 @@ public class DAOKandidat implements InterfaceDAOKandidat{
     @Override
     public void update(ModelKandidat kandidat) {
         try {
-            String query = "UPDATE kandidat SET nama=?, photo_url=?, description=?, no_urut=? WHERE id=?;";
+            String query = "UPDATE candidates SET name=?, photo_url=?, description=?, no_urut=? WHERE id_candidate=?;";
             PreparedStatement stmt = Connector.Connect().prepareStatement(query);
             stmt.setString(1, kandidat.getNama());
             stmt.setString(2, kandidat.getPhoto_url());
@@ -52,7 +52,7 @@ public class DAOKandidat implements InterfaceDAOKandidat{
     @Override
     public void delete(int id) {
         try {
-            String query = "DELETE FROM kandidat WHERE id=?;";
+            String query = "DELETE FROM candidates WHERE id_candidate=?;";
             PreparedStatement stmt = Connector.Connect().prepareStatement(query);
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -67,18 +67,18 @@ public class DAOKandidat implements InterfaceDAOKandidat{
         List<ModelKandidat> list = new ArrayList<>();
         try {
             Statement stmt = Connector.Connect().createStatement();
-            String query = "SELECT * FROM kandidat ORDER BY no_urut;";
+            String query = "SELECT * FROM candidates ORDER BY no_urut;";
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 ModelKandidat k = new ModelKandidat();
-                k.setId(rs.getInt("id"));
-                k.setNama(rs.getString("nama"));
+                k.setId(rs.getInt("id_candidate"));
+                k.setNama(rs.getString("name"));
                 k.setPhoto_url(rs.getString("photo_url"));
                 k.setDescription(rs.getString("description"));
                 k.setNo_urut(rs.getString("no_urut"));
                 list.add(k);
             }
-            stmt.close();
+           stmt.close();
         } catch (SQLException e) {
             System.out.println("GetAll Kandidat Failed! (" + e.getMessage() + ")");
         }
