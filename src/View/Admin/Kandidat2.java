@@ -231,7 +231,7 @@ public class Kandidat2 extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Daftar Kandidat"));
 
-        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Deskripsi", "No Urut"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "photo_url","Deskripsi", "No Urut"}, 0);
         table = new JTable(tableModel);
         table.setRowHeight(30);
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));

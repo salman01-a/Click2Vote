@@ -12,5 +12,5 @@ import java.util.List;
  * @author salmanfaris
  */
 public interface InterfaceDAOVotes {
-    public List<ModelKandidat> getAll();
+    public List<ModelVotes> getAll();
 }
