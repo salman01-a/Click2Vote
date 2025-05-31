@@ -8,12 +8,22 @@ package View.User;
  *
  * @author Lenovo
  */
+import Controller.ControllerKandidat;
+import Controller.ControllerUser;
+import Controller.ControllerVoter;
+import Model.Kandidat.ModelKandidat;
+import Model.User.ModelUser;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class Pilih extends JFrame {
 
-    public Pilih() {
+
+    public Pilih(int id_user) {
+
         setTitle("Pilih Kandidat");
         setSize(1100, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,10 +59,10 @@ public class Pilih extends JFrame {
                 System.out.println(item + " diklik!");
                 // Tambahkan navigasi jika dibutuhkan
                 if (item.equals("Home")) {
-                    new Dashboard();
+                    new Dashboard(id_user);
                 } else if (item.equals("Kandidat")) {
-                    new Kandidat();
-                 }
+                    new Kandidat(id_user);
+                }
             });
 
             navbar.add(button);
@@ -61,63 +71,97 @@ public class Pilih extends JFrame {
 
         mainPanel.add(navbar, BorderLayout.NORTH);
 
-        // ========== CONTENT ==========
-        JPanel content = new JPanel(null);
+        ControllerUser User = new ControllerUser();
+        if (User.isVote(id_user)) {
+            JOptionPane.showMessageDialog(this, "Anda sudah melakukan voting. Terima kasih!");
+            new Dashboard(id_user); // Navigasi kembali ke dashboard
+            dispose(); // Tutup window ini
+            return;
+        }
+        JPanel content = new JPanel(new BorderLayout());
         content.setBackground(Color.WHITE);
 
-        // Card kandidat
-        JPanel card = new JPanel(null);
-        card.setBounds(400, 100, 280, 370);
-        card.setBackground(new Color(245, 239, 255)); // warna ungu muda lembut
-        card.setBorder(BorderFactory.createLineBorder(new Color(180, 0, 200), 1, true));
-        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JLabel title = new JLabel("Pilih", SwingConstants.CENTER);
+        title.setFont(new Font("SansSerif", Font.BOLD, 24));
+        title.setForeground(new Color(111, 0, 162));
+        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        content.add(title, BorderLayout.NORTH);
 
-        // Foto kandidat
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("Assets/User/dika.jpg"));
-            Image image = icon.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH);
-            JLabel foto = new JLabel(new ImageIcon(image));
-            foto.setBounds(0, 0, 280, 200);
-            card.add(foto);
-        } catch (Exception ex) {
-            JLabel errorLabel = new JLabel("Foto tidak ditemukan");
-            errorLabel.setBounds(10, 90, 200, 30);
-            card.add(errorLabel);
+        JPanel cardContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 20));
+        cardContainer.setBackground(new Color(245, 239, 255));
+
+        ControllerKandidat controller = new ControllerKandidat(this);
+        ControllerVoter voter = new ControllerVoter(this);
+        List<ModelKandidat> daftarKandidat = controller.getAllKandidat();
+
+        for (ModelKandidat kandidat : daftarKandidat) {
+            JPanel card = new JPanel(null);
+            card.setPreferredSize(new Dimension(280, 370));
+            card.setBackground(Color.WHITE);
+            card.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
+
+            String rawPath = kandidat.getPhoto_url(); // contoh: "src/Assets/FotoKandidat/vote.png"
+            final String cleanedPath = rawPath.replaceFirst("src/", "");
+            try {
+
+                ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(cleanedPath));
+                Image image = icon.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH);
+                JLabel foto = new JLabel(new ImageIcon(image));
+                foto.setBounds(0, 0, 280, 200);
+                card.add(foto);
+            } catch (Exception ex) {
+                JLabel errorLabel = new JLabel("Foto tidak ditemukan");
+                errorLabel.setBounds(10, 90, 200, 30);
+                card.add(errorLabel);
+            }
+
+            JLabel nama = new JLabel(kandidat.getNama(), SwingConstants.CENTER);
+            nama.setFont(new Font("SansSerif", Font.BOLD, 16));
+            nama.setForeground(new Color(111, 0, 162));
+            nama.setBounds(0, 210, 280, 30);
+            card.add(nama);
+
+            JLabel noUrut = new JLabel("No. Urut: " + kandidat.getNo_urut(), SwingConstants.CENTER);
+            noUrut.setFont(new Font("SansSerif", Font.PLAIN, 14));
+            noUrut.setForeground(Color.DARK_GRAY);
+            noUrut.setBounds(0, 240, 280, 30);
+            card.add(noUrut);
+
+            JButton vote = new JButton("vote");
+            vote.setBounds(90, 300, 100, 35);
+            vote.setBackground(new Color(72, 0, 173));
+            vote.setForeground(Color.WHITE);
+            vote.setFocusPainted(false);
+            vote.setFont(new Font("SansSerif", Font.BOLD, 13));
+            vote.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            vote.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    voter.Vote(
+                            kandidat.getId(),
+                            id_user
+                    );
+                  dispose();
+                }
+
+            });
+
+            card.add(vote);
+            cardContainer.add(card);
         }
 
-        // Nama kandidat
-        JLabel nama = new JLabel("Dika", SwingConstants.CENTER);
-        nama.setFont(new Font("SansSerif", Font.BOLD, 16));
-        nama.setForeground(new Color(72, 0, 173));
-        nama.setBounds(0, 210, 280, 30);
-        card.add(nama);
+        JScrollPane scrollPane = new JScrollPane(cardContainer);
+        scrollPane.setBorder(null); // opsional
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // untuk smooth scroll
 
-        // Nomor urut dan nama
-        JLabel info = new JLabel("2 | Dika", SwingConstants.CENTER);
-        info.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        info.setForeground(Color.DARK_GRAY);
-        info.setBounds(0, 240, 280, 30);
-        card.add(info);
-
-        // Tombol Vote
-        JButton vote = new JButton("Vote");
-        vote.setBounds(90, 300, 100, 35);
-        vote.setBackground(new Color(72, 0, 173));
-        vote.setForeground(Color.WHITE);
-        vote.setFocusPainted(false);
-        vote.setFont(new Font("SansSerif", Font.BOLD, 13));
-        vote.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        vote.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "Anda memilih Dika.");
-        });
-
-        card.add(vote);
-
-        content.add(card);
+// ⬇️ Masukkan JScrollPane ke content panel
+        content.add(scrollPane, BorderLayout.CENTER);
+        content.add(cardContainer, BorderLayout.CENTER);
         mainPanel.add(content, BorderLayout.CENTER);
-        add(mainPanel);
+        setContentPane(mainPanel);
         setVisible(true);
+
     }
 
 }

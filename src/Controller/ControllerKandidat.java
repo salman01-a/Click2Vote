@@ -6,6 +6,7 @@ package Controller;
 import View.Admin.Kandidat2;
 import Model.Kandidat.*;
 import View.User.Kandidat;
+import View.User.Pilih;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
     Kandidat2 view;
     DAOKandidat dao;
     Kandidat list;
+    Pilih Pilih;
     String imagePath = "";
 
     public ControllerKandidat(Kandidat2 view) {
@@ -60,7 +62,11 @@ import javax.swing.table.DefaultTableModel;
         dao = new DAOKandidat(); 
         
     }
-
+ public ControllerKandidat(Pilih pilih){
+        this.Pilih = pilih;
+        dao = new DAOKandidat(); 
+        
+    }
    
     public List<ModelKandidat> getAllKandidat() {
        List<ModelKandidat> daftarKandidat = dao.getAll();

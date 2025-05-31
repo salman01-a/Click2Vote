@@ -9,7 +9,7 @@ package Model.User;
  * @author salmanfaris
  */
 public class ModelUser {
-    int id;
+    private int id;
 
     public int getId() {
         return id;
@@ -42,5 +42,13 @@ public class ModelUser {
     public void setPassword(String password) {
         this.password = password;
     }
-    String full_name,username,password;
+    private String full_name,username,password,roles;
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
 }

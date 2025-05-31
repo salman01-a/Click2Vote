@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface InterfaceDAOHasilVotes {
     public List<ModelHasilVotes> getHasilVoting();
+    
 }

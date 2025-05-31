@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class DetailKandidat extends JFrame {
 
-    public DetailKandidat(String Nama, String no_urut, String desc, String photo_url) {
+    public DetailKandidat(String Nama, String no_urut, String desc, String photo_url,int id_user) {
         setTitle("Detail Kandidat");
         setSize(1100, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,15 +48,15 @@ public class DetailKandidat extends JFrame {
              button.addActionListener(e -> {
                 System.out.println(item + " diklik!");
                 if (item.equals("Home")) {
-                    new Dashboard();
+                    new Dashboard(id_user);
                     dispose();
                 } else if (item.equals("Kandidat")) {
-                    new Kandidat();
+                    new Kandidat(id_user);
                     dispose();
 
 
                 } else if (item.equals("Pilih")) {
-                    new Pilih();
+                    new Pilih(id_user);
                     dispose();
 
 
@@ -66,7 +66,8 @@ public class DetailKandidat extends JFrame {
             navbar.add(button);
             x += 90;
         }
-
+        
+        
         mainPanel.add(navbar, BorderLayout.NORTH);
 
         // ========== CONTENT ==========

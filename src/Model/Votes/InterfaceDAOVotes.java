@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface InterfaceDAOVotes {
     public List<ModelVotes> getAll();
+    public void Vote (int id_kandidat, int id_user);
 }

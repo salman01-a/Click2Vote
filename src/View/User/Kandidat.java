@@ -7,8 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 public class Kandidat extends JFrame {
-
-    public Kandidat() {
+    public Kandidat(int id_user) {
         setTitle("Temui Para Kandidat");
         setSize(1100, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,7 +20,7 @@ public class Kandidat extends JFrame {
         navbar.setPreferredSize(new Dimension(1100, 50));
         navbar.setBackground(new Color(111, 0, 162));
 
-        JLabel logo = new JLabel("GO VOTE");
+        JLabel logo = new JLabel("Click2Vote");
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
         logo.setBounds(20, 15, 100, 20);
@@ -42,9 +41,9 @@ public class Kandidat extends JFrame {
             button.addActionListener(e -> {
                 System.out.println(item + " diklik!");
                 if (item.equals("Home")) {
-                    new Dashboard();
+                    new Dashboard(id_user);
                 } else if (item.equals("Pilih")) {
-                    new Pilih();
+                    new Pilih(id_user);
                     dispose();
                 }
             });
@@ -65,7 +64,8 @@ public class Kandidat extends JFrame {
         content.add(title, BorderLayout.NORTH);
 
         JPanel cardContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 20));
-        cardContainer.setBackground(Color.WHITE);
+        cardContainer.setBackground(new Color(245, 239, 255));
+        
         ControllerKandidat controller = new ControllerKandidat (this);
         List<ModelKandidat> daftarKandidat = controller.getAllKandidat();
         for (ModelKandidat kandidat : daftarKandidat) {
@@ -113,7 +113,8 @@ public class Kandidat extends JFrame {
                 kandidat.getNama(),
                 kandidat.getNo_urut(),
                 kandidat.getDescription(),
-                cleanedPath
+                cleanedPath,
+                id_user
             )
             );
             dispose();

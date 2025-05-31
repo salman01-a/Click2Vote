@@ -46,4 +46,29 @@ public class DAOVotes implements InterfaceDAOVotes {
         }
         return list;
     }
+
+    @Override
+    public void Vote(int id_kandidat,int id_user) {
+      try{
+//          String query = "INSERT INTO candidates (name, photo_url, description, no_urut) VALUES (?, ?, ?, ?);";
+//            PreparedStatement stmt = Connector.Connect().prepareStatement(query);
+//            stmt.setString(1, kandidat.getNama());
+//            stmt.setString(2, kandidat.getPhoto_url());
+//            stmt.setString(3, kandidat.getDescription());
+//            stmt.setString(4, kandidat.getNo_urut());
+    //            stmt.executeUpdate();
+//            stmt.close();
+          Connection conn = Connector.Connect();
+          String query = "INSERT INTO votes (id_user, id_candidate) VALUES (?,?)";
+          PreparedStatement stmt = Connector.Connect().prepareStatement(query);
+          stmt.setInt(1, id_user);
+          stmt.setInt(2, id_kandidat);
+            stmt.executeUpdate();
+            stmt.close();
+      }catch (SQLException e){
+          System.out.println(e);
+      }
+    }
+    
+    
 }

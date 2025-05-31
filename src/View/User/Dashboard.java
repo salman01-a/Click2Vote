@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class Dashboard extends JFrame {
 
-    public Dashboard() {
+    public Dashboard(int id_user) {
         setTitle("Ayo Pemilu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 600);
@@ -48,11 +48,11 @@ public class Dashboard extends JFrame {
                         System.exit(0);
                     }
                 } else if (item.equals("Kandidat")) {
-                    new Kandidat();
+                    new Kandidat(id_user);
                      dispose();
 
                 } else if(item.equals("Pilih")){
-                    new Pilih();
+                    new Pilih(id_user);
                      dispose();
                 }
             });

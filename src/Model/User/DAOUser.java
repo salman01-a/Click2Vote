@@ -17,17 +17,20 @@ import javax.swing.JOptionPane;
 public class DAOUser implements InterfaceDAOUser{
 
     @Override
-    public String Login(String Username, String Password) {
+    public ModelUser Login(String Username, String Password) {
+        ModelUser user = new ModelUser();
          try{
-               String query = "SELECT role FROM users WHERE username=? AND password=?";
+               String query = "SELECT * FROM users WHERE username=? AND password=?";
                 PreparedStatement stmt = Connector.Connect().prepareStatement(query);
                 stmt.setString(1, Username);
                 stmt.setString(2, Password);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
-                    String Nama= rs.getString("role");
-                    return Nama;    
-                    
+                    user.setId(rs.getInt("id_user"));
+                    user.setFull_name(rs.getString("full_name"));
+                    user.setUsername(rs.getString("username")); 
+                    user.setRoles(rs.getString("role"));
+                    return user;
                 }   
                 stmt.close();
             }catch(SQLException err){
@@ -52,6 +55,27 @@ public class DAOUser implements InterfaceDAOUser{
             }catch(SQLException err){
                 System.out.println("Error : " + err.getLocalizedMessage());
             }  
+    }
+
+    @Override
+    public String isVote(int id_user) {
+        String id;
+        try{
+               String query = "SELECT * FROM votes where id_user = ?";
+                PreparedStatement stmt = Connector.Connect().prepareStatement(query);
+                stmt.setInt(1,id_user);
+             
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    id = Integer.toString(rs.getInt("id_user"));
+                    return id;
+                }   
+                stmt.close();
+            }catch(SQLException err){
+
+                System.out.println("Error : " + err.getLocalizedMessage());
+            }
+            return null;
     }
     
 }

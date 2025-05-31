@@ -9,6 +9,7 @@ package Model.User;
  * @author salmanfaris
  */
 public interface InterfaceDAOUser {
-    public String Login(String Username, String Password);
+    public ModelUser Login(String Username, String Password);
     public void Signin(ModelUser user);
+    public String isVote(int id_user);
 }
