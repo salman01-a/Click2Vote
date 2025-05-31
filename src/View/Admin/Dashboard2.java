@@ -23,7 +23,7 @@ public class Dashboard2 extends JFrame {
     public Dashboard2() {
          setTitle("Data Kandidat");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 700);
+        setSize(830, 700);
         setLocationRelativeTo(null);
 //                desc.setBounds(400, 350, 40, 30);
         setLayout(new BorderLayout(15, 15));
@@ -65,7 +65,9 @@ public class Dashboard2 extends JFrame {
                         System.exit(0);
                     }
                 } else if (action.equals("Kandidat")) {
-                    new Kandidat().setVisible(true);
+                    new Kandidat2().setVisible(true);
+                } else if (action.equals("Daftar Pemilih")) {
+                    new ListVoter().setVisible(true);
                 }
             });
 
@@ -93,6 +95,11 @@ desc.setVerticalAlignment(JLabel.CENTER); // Biar lebih pas
 add(desc, BorderLayout.CENTER);
         add(navbar, BorderLayout.NORTH);
         setVisible(true);
+
+    }
+    
+    public static void main(String[] args) {
+       SwingUtilities.invokeLater(Dashboard2::new);
 
     }
 }

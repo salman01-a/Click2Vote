@@ -27,7 +27,7 @@ public class Kandidat2 extends JFrame {
     public Kandidat2() {
         setTitle("Data Kandidat");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 700);
+        setSize(830, 700);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
 
@@ -89,7 +89,9 @@ public class Kandidat2 extends JFrame {
                         System.exit(0);
                     }
                 } else if (action.equals("Kandidat")) {
-                    new Kandidat().setVisible(true);
+                    new Kandidat2().setVisible(true);
+                } else if (action.equals("Daftar Pemilih")) {
+                    new ListVoter().setVisible(true);
                 }
             });
 

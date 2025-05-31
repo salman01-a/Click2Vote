@@ -15,7 +15,7 @@ public class ListVoter extends JFrame {
     public ListVoter() {
         setTitle("Data Pemilih");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 700);
+        setSize(830, 700);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
 
@@ -51,7 +51,7 @@ public class ListVoter extends JFrame {
                         System.exit(0);
                     }
                 } else if (item.equals("Kandidat")) {
-                    new Kandidat().setVisible(true); // pastikan class Kandidat ada
+                    new Kandidat2().setVisible(true); // pastikan class Kandidat ada
                 }
             });
 
