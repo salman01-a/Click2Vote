@@ -49,6 +49,11 @@ public class Dashboard extends JFrame {
                     }
                 } else if (item.equals("Kandidat")) {
                     new Kandidat();
+                     dispose();
+
+                } else if(item.equals("Pilih")){
+                    new Pilih();
+                     dispose();
                 }
             });
 

@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class DetailKandidat extends JFrame {
 
-    public DetailKandidat() {
+    public DetailKandidat(String Nama, String no_urut, String desc, String photo_url) {
         setTitle("Detail Kandidat");
         setSize(1100, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,11 +49,16 @@ public class DetailKandidat extends JFrame {
                 System.out.println(item + " diklik!");
                 if (item.equals("Home")) {
                     new Dashboard();
+                    dispose();
                 } else if (item.equals("Kandidat")) {
                     new Kandidat();
+                    dispose();
+
 
                 } else if (item.equals("Pilih")) {
                     new Pilih();
+                    dispose();
+
 
                 } 
             });
@@ -78,7 +83,7 @@ public class DetailKandidat extends JFrame {
 
         // Foto kandidat
         try {
-            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("Assets/User/dika.jpg"));
+            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(photo_url));
             Image image = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
             JLabel foto = new JLabel(new ImageIcon(image));
             foto.setBounds(0, 0, 300, 300);
@@ -90,27 +95,21 @@ public class DetailKandidat extends JFrame {
         }
 
         // Nama kandidat
-        JLabel nama = new JLabel("Dika", SwingConstants.CENTER);
+        JLabel nama = new JLabel(Nama, SwingConstants.CENTER);
         nama.setFont(new Font("SansSerif", Font.BOLD, 24));
         nama.setBounds(0, 310, 300, 30);
         card.add(nama);
 
         // Nomor urut
-        JLabel nomor = new JLabel("Nomor Urut 2", SwingConstants.CENTER);
+        JLabel nomor = new JLabel("Nomor Urut "+ no_urut, SwingConstants.CENTER);
         nomor.setFont(new Font("SansSerif", Font.PLAIN, 14));
         nomor.setForeground(Color.DARK_GRAY);
         nomor.setBounds(0, 340, 300, 20);
         card.add(nomor);
 
-        // Asal
-        JLabel asal = new JLabel("Asal: aceh", SwingConstants.CENTER);
-        asal.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        asal.setForeground(Color.DARK_GRAY);
-        asal.setBounds(0, 360, 300, 20);
-        card.add(asal);
 
         // Info tambahan
-        JLabel tambahan = new JLabel("vvv", SwingConstants.CENTER);
+        JLabel tambahan = new JLabel(desc, SwingConstants.CENTER);
         tambahan.setFont(new Font("SansSerif", Font.PLAIN, 14));
         tambahan.setForeground(Color.DARK_GRAY);
         tambahan.setBounds(0, 380, 300, 20);

@@ -1,18 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package View.User;
-
-/**
- *
- * @author Lenovo
- */
-
+    
+import Controller.ControllerKandidat;
+import Model.Kandidat.ModelKandidat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.util.List;
 public class Kandidat extends JFrame {
 
     public Kandidat() {
@@ -21,10 +14,9 @@ public class Kandidat extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Panel utama
         JPanel mainPanel = new JPanel(new BorderLayout());
-
-        // ========== NAVBAR ==========
+        
+        // NAVBAR
         JPanel navbar = new JPanel(null);
         navbar.setPreferredSize(new Dimension(1100, 50));
         navbar.setBackground(new Color(111, 0, 162));
@@ -51,168 +43,94 @@ public class Kandidat extends JFrame {
                 System.out.println(item + " diklik!");
                 if (item.equals("Home")) {
                     new Dashboard();
-                    
+                } else if (item.equals("Pilih")) {
+                    new Pilih();
+                    dispose();
                 }
             });
 
             navbar.add(button);
             x += 90;
         }
-
+        
         mainPanel.add(navbar, BorderLayout.NORTH);
-  for(int i = 0; i < 3 ; i++){
-                    // ========== CONTENT ==========
-        JPanel content = new JPanel();
-        content.setLayout(null);
+
+        JPanel content = new JPanel(new BorderLayout());
         content.setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("Temui Para Kandidat");
+        JLabel title = new JLabel("Temui Para Kandidat", SwingConstants.CENTER);
         title.setFont(new Font("SansSerif", Font.BOLD, 24));
         title.setForeground(new Color(111, 0, 162));
-        title.setBounds(430, 30, 300, 30);
-        content.add(title);
+        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        content.add(title, BorderLayout.NORTH);
 
-        // Card kandidat
-        JPanel card = new JPanel(null);
-        card.setBounds(130, 100, 280, 400);
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(230, 230, 230)),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        card.setOpaque(true);
-        card.setLayout(null);
-        card.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
-        card.setBounds(400, 100, 280, 370);
-        card.setBackground(Color.WHITE);
-        card.setVisible(true);
+        JPanel cardContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 20));
+        cardContainer.setBackground(Color.WHITE);
+        ControllerKandidat controller = new ControllerKandidat (this);
+        List<ModelKandidat> daftarKandidat = controller.getAllKandidat();
+        for (ModelKandidat kandidat : daftarKandidat) {
+            JPanel card = new JPanel(null);
+            card.setPreferredSize(new Dimension(280, 370));
+            card.setBackground(Color.WHITE);
+            card.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
+            
+            String rawPath = kandidat.getPhoto_url(); // contoh: "src/Assets/FotoKandidat/vote.png"
+            final String cleanedPath = rawPath.replaceFirst("src/", "");
+            try {
+                
+                ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(cleanedPath));
+                Image image = icon.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH);
+                JLabel foto = new JLabel(new ImageIcon(image));
+                foto.setBounds(0, 0, 280, 200);
+                card.add(foto);
+            } catch (Exception ex) {
+                JLabel errorLabel = new JLabel("Foto tidak ditemukan");
+                errorLabel.setBounds(10, 90, 200, 30);
+                card.add(errorLabel);
+            }
 
-      
-        // Foto kandidat
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("Assets/User/dika.jpg"));
-            Image image = icon.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH);
-            JLabel foto = new JLabel(new ImageIcon(image));
-            foto.setBounds(0, 0, 280, 200);
-            card.add(foto);
-        } catch (Exception ex) {
-            JLabel errorLabel = new JLabel("Foto tidak ditemukan");
-            errorLabel.setBounds(10, 90, 200, 30);
-            card.add(errorLabel);
+            JLabel nama = new JLabel(kandidat.getNama(), SwingConstants.CENTER);
+            nama.setFont(new Font("SansSerif", Font.BOLD, 16));
+            nama.setForeground(new Color(111, 0, 162));
+            nama.setBounds(0, 210, 280, 30);
+            card.add(nama);
+            
+            JLabel noUrut = new JLabel("No. Urut: " + kandidat.getNo_urut(), SwingConstants.CENTER);
+            noUrut.setFont(new Font("SansSerif", Font.PLAIN, 14));
+            noUrut.setForeground(Color.DARK_GRAY);
+            noUrut.setBounds(0, 240, 280, 30);
+            card.add(noUrut);
+
+            JButton rincian = new JButton("Rincian");
+            rincian.setBounds(90, 300, 100, 35);
+            rincian.setBackground(new Color(72, 0, 173));
+            rincian.setForeground(Color.WHITE);
+            rincian.setFocusPainted(false);
+            rincian.setFont(new Font("SansSerif", Font.BOLD, 13));
+            rincian.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            rincian.addActionListener(e -> new DetailKandidat(
+                kandidat.getNama(),
+                kandidat.getNo_urut(),
+                kandidat.getDescription(),
+                cleanedPath
+            )
+            );
+            dispose();
+            card.add(rincian);
+            cardContainer.add(card);
         }
+        
+        JScrollPane scrollPane = new JScrollPane(cardContainer);
+        scrollPane.setBorder(null); // opsional
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // untuk smooth scroll
 
-        // Nama kandidat
-        JLabel nama = new JLabel("Dika", SwingConstants.CENTER);
-        nama.setFont(new Font("SansSerif", Font.BOLD, 16));
-        nama.setForeground(new Color(111, 0, 162));
-        nama.setBounds(0, 210, 280, 30);
-        card.add(nama);
-
-        // Asal kandidat
-        JLabel asal = new JLabel("2 | aceh", SwingConstants.CENTER);
-        asal.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        asal.setForeground(Color.DARK_GRAY);
-        asal.setBounds(0, 240, 280, 30);
-        card.add(asal);
-
-        // Tombol rincian
-        JButton rincian = new JButton("Rincian");
-        rincian.setBounds(90, 300, 100, 35);
-        rincian.setBackground(new Color(72, 0, 173));
-        rincian.setForeground(Color.WHITE);
-        rincian.setFocusPainted(false);
-        rincian.setFont(new Font("SansSerif", Font.BOLD, 13));
-        rincian.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        rincian.addActionListener(e -> {
-             if (e.getSource()== rincian) {
-                    new DetailKandidat();
-                } 
-        });
-
-        card.add(rincian);
-
-        content.add(card);
+// ⬇️ Masukkan JScrollPane ke content panel
+        content.add(scrollPane, BorderLayout.CENTER);
+        content.add(cardContainer, BorderLayout.CENTER);
         mainPanel.add(content, BorderLayout.CENTER);
-        }
-        add(mainPanel);
-//        // ========== CONTENT ==========
-//        JPanel content = new JPanel();
-//        content.setLayout(null);
-//        content.setBackground(Color.WHITE);
-//
-//        JLabel title = new JLabel("Temui Para Kandidat");
-//        title.setFont(new Font("SansSerif", Font.BOLD, 24));
-//        title.setForeground(new Color(111, 0, 162));
-//        title.setBounds(430, 30, 300, 30);
-//        content.add(title);
-//
-//        // Card kandidat
-//        JPanel card = new JPanel(null);
-//        card.setBounds(130, 100, 280, 400);
-//        card.setBackground(Color.WHITE);
-//        card.setBorder(BorderFactory.createCompoundBorder(
-//                BorderFactory.createLineBorder(new Color(230, 230, 230)),
-//                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-//        ));
-//        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
-//        card.setOpaque(true);
-//        card.setLayout(null);
-//        card.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
-//        card.setBounds(400, 100, 280, 370);
-//        card.setBackground(Color.WHITE);
-//        card.setVisible(true);
-//
-//      
-//        // Foto kandidat
-//        try {
-//            ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("Assets/User/dika.jpg"));
-//            Image image = icon.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH);
-//            JLabel foto = new JLabel(new ImageIcon(image));
-//            foto.setBounds(0, 0, 280, 200);
-//            card.add(foto);
-//        } catch (Exception ex) {
-//            JLabel errorLabel = new JLabel("Foto tidak ditemukan");
-//            errorLabel.setBounds(10, 90, 200, 30);
-//            card.add(errorLabel);
-//        }
-//
-//        // Nama kandidat
-//        JLabel nama = new JLabel("Dika", SwingConstants.CENTER);
-//        nama.setFont(new Font("SansSerif", Font.BOLD, 16));
-//        nama.setForeground(new Color(111, 0, 162));
-//        nama.setBounds(0, 210, 280, 30);
-//        card.add(nama);
-//
-//        // Asal kandidat
-//        JLabel asal = new JLabel("2 | aceh", SwingConstants.CENTER);
-//        asal.setFont(new Font("SansSerif", Font.PLAIN, 14));
-//        asal.setForeground(Color.DARK_GRAY);
-//        asal.setBounds(0, 240, 280, 30);
-//        card.add(asal);
-//
-//        // Tombol rincian
-//        JButton rincian = new JButton("Rincian");
-//        rincian.setBounds(90, 300, 100, 35);
-//        rincian.setBackground(new Color(72, 0, 173));
-//        rincian.setForeground(Color.WHITE);
-//        rincian.setFocusPainted(false);
-//        rincian.setFont(new Font("SansSerif", Font.BOLD, 13));
-//        rincian.setCursor(new Cursor(Cursor.HAND_CURSOR));
-//
-//        rincian.addActionListener(e -> {
-//             if (e.getSource()== rincian) {
-//                    new DetailKandidat();
-//                } 
-//        });
-//
-//        card.add(rincian);
-//
-//        content.add(card);
-//        mainPanel.add(content, BorderLayout.CENTER);
-//        add(mainPanel);
+        setContentPane(mainPanel);
         setVisible(true);
+    
     }
-
 }

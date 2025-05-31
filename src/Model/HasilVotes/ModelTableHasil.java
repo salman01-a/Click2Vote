@@ -11,11 +11,11 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author salmanfaris
  */
-public class ModelTable extends AbstractTableModel {
+public class ModelTableHasil extends AbstractTableModel {
     private final List<ModelHasilVotes> data;
     private final String[] columnNames = {"No", "Nama Kandidat", "Jumlah Suara"};
 
-    public ModelTable(List<ModelHasilVotes> data) {
+    public ModelTableHasil(List<ModelHasilVotes> data) {
         this.data = data;
     }
 

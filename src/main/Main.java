@@ -19,7 +19,8 @@ public class Main {
 //          new View.Admin.ListVoter();
 //            new View.Admin.Dashboard2();
 //            new View.Admin.HasilVote().setVisible(true);
-            new View.LoginPage();
+//            new View.LoginPage();
+              new View.User.Kandidat();
           
     
     }

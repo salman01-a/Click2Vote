@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controller;
-import View.Admin.*;
+import View.Admin.Kandidat2;
 import Model.Kandidat.*;
-
+import View.User.Kandidat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
    public class ControllerKandidat {
     Kandidat2 view;
     DAOKandidat dao;
+    Kandidat list;
     String imagePath = "";
 
     public ControllerKandidat(Kandidat2 view) {
@@ -53,8 +54,21 @@ import javax.swing.table.DefaultTableModel;
             }
         });
     }
+    
+    public ControllerKandidat(Kandidat list){
+        this.list = list;
+        dao = new DAOKandidat(); 
+        
+    }
 
-    private void insert() {
+   
+    public List<ModelKandidat> getAllKandidat() {
+       List<ModelKandidat> daftarKandidat = dao.getAll();
+       return daftarKandidat;
+        
+   }
+
+    public void insert() {
         ModelKandidat k = new ModelKandidat();
         k.setNama(view.tfNama.getText());
         k.setPhoto_url(view.tfPhotoUrl.getText());
@@ -66,7 +80,7 @@ import javax.swing.table.DefaultTableModel;
         reset();
     }
 
-    private void update() {
+    public void update() {
         ModelKandidat k = new ModelKandidat();
         k.setId(Integer.parseInt(view.tfId.getText()));
         k.setNama(view.tfNama.getText());
@@ -79,14 +93,14 @@ import javax.swing.table.DefaultTableModel;
         reset();
     }
 
-    private void delete() {
+    public void delete() {
         int id = Integer.parseInt(view.tfId.getText());
         dao.delete(id);
         loadTable();
         reset();
     }
 
-    private void reset() {
+    public void reset() {
         view.tfId.setText("");
         view.tfNama.setText("");
         view.tfPhotoUrl.setText("");

@@ -6,7 +6,7 @@ package View.Admin;
 
 import Controller.ControllerVoter;
 import Model.HasilVotes.ModelHasilVotes;
-import Model.HasilVotes.ModelTable;
+import Model.HasilVotes.ModelTableHasil;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -96,7 +96,7 @@ public class HasilVote extends JFrame{
         ControllerVoter controller = new ControllerVoter(this);
         List<ModelHasilVotes> hasil = controller.getHasilVoting();
 
-        JTable table = new JTable(new ModelTable(hasil));
+        JTable table = new JTable(new ModelTableHasil(hasil));
         table.setRowHeight(25);
         table.setFont(new Font("SansSerif", Font.PLAIN, 14));
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
