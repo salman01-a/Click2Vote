@@ -90,8 +90,16 @@ public class Kandidat2 extends JFrame {
                     }
                 } else if (action.equals("Kandidat")) {
                     new Kandidat2().setVisible(true);
+                                        dispose();
+
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
+                                        dispose();
+
+                }else if (action.equals("Hasil Voting")){
+                    new HasilVote().setVisible(true);
+                                        dispose();
+
                 }
             });
 

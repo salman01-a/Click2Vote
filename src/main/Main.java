@@ -16,7 +16,11 @@ public class Main {
     public static void main(String[] args) {
 //        View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
 //        new Controller.ControllerKandidat(view);
-          new View.Admin.ListVoter();
+//          new View.Admin.ListVoter();
+//            new View.Admin.Dashboard2();
+//            new View.Admin.HasilVote().setVisible(true);
+            new View.LoginPage();
+          
     
     }
     

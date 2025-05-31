@@ -26,7 +26,8 @@ public class DAOUser implements InterfaceDAOUser{
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     String Nama= rs.getString("role");
-                    return Nama;               
+                    return Nama;    
+                    
                 }   
                 stmt.close();
             }catch(SQLException err){

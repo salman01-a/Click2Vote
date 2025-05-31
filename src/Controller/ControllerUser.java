@@ -38,9 +38,13 @@ public class ControllerUser {
              
 
          if(nama != null){
+             if(nama.equals("admin")){
+                 new View.Admin.Dashboard2().setVisible(true);
+                 Login.dispose();
+             }else{
              new View.User.Dashboard();
              Login.dispose();
-
+             }
          }else{
              JOptionPane.showMessageDialog(Login, "Salah password");
          }     

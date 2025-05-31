@@ -65,9 +65,18 @@ public class Dashboard2 extends JFrame {
                         System.exit(0);
                     }
                 } else if (action.equals("Kandidat")) {
-                    new Kandidat2().setVisible(true);
+                    View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
+                    new Controller.ControllerKandidat(view);
+                         dispose();
+
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
+                                        dispose();
+
+                }else if (action.equals("Hasil Voting")) {
+                    new ListVoter().setVisible(true);
+                                        dispose();
+
                 }
             });
 
