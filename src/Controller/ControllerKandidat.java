@@ -109,6 +109,7 @@ import java.sql.SQLException;
 
 }
 
+
     public void update() {
         if (view.tfId.getText().isEmpty()) {
             JOptionPane.showMessageDialog(view, "Data belum dipilih!", "Peringatan", JOptionPane.WARNING_MESSAGE);
