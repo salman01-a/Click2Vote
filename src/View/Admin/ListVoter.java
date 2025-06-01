@@ -19,8 +19,8 @@ public class ListVoter extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
 
-        Color baseColor = new Color(30, 144, 255);
-        Color hoverColor = new Color(65, 105, 225);
+        Color baseColor = new Color(138, 43, 226);        // Ungu utama
+        Color hoverColor = new Color(75, 0, 130);
 
         JPanel navbar = new JPanel(null);
         navbar.setPreferredSize(new Dimension(700, 50));
@@ -30,7 +30,17 @@ public class ListVoter extends JFrame {
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
         logo.setBounds(20, 15, 100, 20);
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         navbar.add(logo);
+        logo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Buka halaman dashboard
+                new Dashboard2().setVisible(true);
+                // Tutup halaman kandidat saat ini
+                dispose();
+            }
+        });
 
         String[] navItems = {"Logout", "Hasil Voting", "Daftar Pemilih", "Kandidat"};
         int x = 725;
