@@ -32,8 +32,8 @@ public class HasilVote extends JFrame{
         setLayout(new BorderLayout(10, 10));
         
         
-        Color baseColor = new Color(30, 144, 255);
-        Color hoverColor = new Color(65, 105, 225);
+        Color baseColor = new Color(138, 43, 226);        // Ungu utama
+        Color hoverColor = new Color(75, 0, 130);
 
 // Panel Navbar
         JPanel navbar = new JPanel(null); // pakai null layout agar bisa pakai setBounds
@@ -44,7 +44,17 @@ public class HasilVote extends JFrame{
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
         logo.setBounds(20, 15, 100, 20);
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         navbar.add(logo);
+        logo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Buka halaman dashboard
+                new Dashboard2().setVisible(true);
+                // Tutup halaman kandidat saat ini
+                dispose();
+            }
+        });
 // Tambahkan tombol navigasi
         String[] navItems = {"Logout", "Hasil Voting", "Daftar Pemilih", "Kandidat"};
         int x = 725; // mulai dari kanan
@@ -69,8 +79,10 @@ public class HasilVote extends JFrame{
                 } else if (action.equals("Kandidat")) {
                     View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
                     new Controller.ControllerKandidat(view);
+                    dispose();
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
+                    dispose();
                 }
             });
 
