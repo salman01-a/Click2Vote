@@ -54,22 +54,30 @@ public class Kandidat2 extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        Color baseColor = new Color(30, 144, 255);
-        Color hoverColor = new Color(65, 105, 225);
+        Color baseColor = new Color(111, 0, 162);
+        Color hoverColor = new Color(140, 0, 190);
 
-// Panel Navbar
-        JPanel navbar = new JPanel(null); // pakai null layout agar bisa pakai setBounds
+        JPanel navbar = new JPanel(null);
         navbar.setPreferredSize(new Dimension(700, 50));
         navbar.setBackground(baseColor);
-        
-         JLabel logo = new JLabel("Admin");
+
+        JLabel logo = new JLabel("Click2Vote-Admin");
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
-        logo.setBounds(20, 15, 100, 20);
+        logo.setBounds(20, 15, 150, 20);
         navbar.add(logo);
-// Tambahkan tombol navigasi
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        logo.addMouseListener(new MouseAdapter() {
+        @Override
+            public void mouseClicked(MouseEvent e) {
+                new Dashboard2().setVisible(true); // Buka halaman Kandidat2
+                dispose(); // Tutup halaman saat ini
+            }
+        });
+
         String[] navItems = {"Logout", "Hasil Voting", "Daftar Pemilih", "Kandidat"};
-        int x = 725; // mulai dari kanan
+        int x = 725;
         for (String item : navItems) {
             JButton navButton = new JButton(item);
             navButton.setFocusPainted(false);
@@ -80,7 +88,7 @@ public class Kandidat2 extends JFrame {
             navButton.setBounds(x, 10, 100, 30);
             navButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-            String action = item; // harus final untuk lambda
+            String action = item;
             navButton.addActionListener(e -> {
                 System.out.println(action + " diklik!");
                 if (action.equals("Logout")) {
@@ -90,15 +98,14 @@ public class Kandidat2 extends JFrame {
                     }
                 } else if (action.equals("Kandidat")) {
                     new Kandidat2().setVisible(true);
-                                        dispose();
+                    dispose();
 
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
-                                        dispose();
-
-                }else if (action.equals("Hasil Voting")){
+                    dispose();
+                } else if (action.equals("Hasil Voting")) {
                     new HasilVote().setVisible(true);
-                                        dispose();
+                    dispose();
 
                 }
             });
@@ -132,11 +139,22 @@ public class Kandidat2 extends JFrame {
                 setImagePreview(path);
             }
         });
+
+       
+
+        btnDelete.addActionListener(e -> {
+            if (!tfId.getText().isEmpty()) {
+                int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+                if (confirm != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
+        });
     }
 
     private JPanel createFormPanel() {
         JPanel formPanel = new JPanel();
-        formPanel.setLayout(null); // gunakan null layout agar bisa pakai setBounds
+        formPanel.setLayout(null);
         formPanel.setPreferredSize(new Dimension(450, 300));
         formPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Form Kandidat"),
@@ -211,37 +229,11 @@ public class Kandidat2 extends JFrame {
         return panel;
     }
 
-    private JPanel createButtonPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-
-        Dimension btnSize = new Dimension(120, 35);
-        btnInsert.setPreferredSize(btnSize);
-        btnUpdate.setPreferredSize(btnSize);
-        btnDelete.setPreferredSize(btnSize);
-        btnReset.setPreferredSize(btnSize);
-
-        btnInsert.setBackground(new Color(50, 120, 200));
-        btnInsert.setForeground(Color.WHITE);
-        btnUpdate.setBackground(new Color(40, 150, 100));
-        btnUpdate.setForeground(Color.WHITE);
-        btnDelete.setBackground(new Color(200, 60, 50));
-        btnDelete.setForeground(Color.WHITE);
-        btnReset.setBackground(new Color(180, 180, 180));
-
-        panel.add(btnInsert);
-        panel.add(btnUpdate);
-        panel.add(btnDelete);
-        panel.add(btnReset);
-
-        return panel;
-    }
-
     private JPanel createTablePanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Daftar Kandidat"));
 
-        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "photo_url","Deskripsi", "No Urut"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "photo_url", "Deskripsi", "No Urut"}, 0);
         table = new JTable(tableModel);
         table.setRowHeight(30);
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
