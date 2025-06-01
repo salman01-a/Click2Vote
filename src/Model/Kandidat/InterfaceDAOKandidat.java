@@ -5,6 +5,8 @@
 package Model.Kandidat;
 
 import java.util.List;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -13,6 +15,6 @@ import java.util.List;
 public interface InterfaceDAOKandidat {
     public void insert(ModelKandidat kandidat);
     public void update(ModelKandidat kandidat);
-    public void delete(int id);
+    public void delete(int id) throws SQLException;
     public List<ModelKandidat> getAll();
 }

@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+
 /**
  *
  * @author salmanfaris
@@ -75,36 +77,97 @@ import javax.swing.table.DefaultTableModel;
    }
 
     public void insert() {
-        ModelKandidat k = new ModelKandidat();
-        k.setNama(view.tfNama.getText());
-        k.setPhoto_url(view.tfPhotoUrl.getText());
-        k.setDescription(view.tfDescription.getText());
-        k.setNo_urut(view.tfNoUrut.getText());
-       
-        dao.insert(k);
-        loadTable();
-        reset();
+    // Validasi input wajib diisi
+    if(view.tfNama.getText().trim().isEmpty() || 
+       view.tfNoUrut.getText().trim().isEmpty() || 
+       view.tfDescription.getText().trim().isEmpty() || 
+       view.tfPhotoUrl.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(view, "Semua field harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        return;
+    }    
+        
+    String noUrut = view.tfNoUrut.getText().trim();
+
+    // Cek duplikat no_urut
+    for (ModelKandidat k : dao.getAll()) {
+        if (k.getNo_urut().equalsIgnoreCase(noUrut)) {
+            JOptionPane.showMessageDialog(view, "Nomor urut sudah digunakan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
     }
 
+    ModelKandidat k = new ModelKandidat();
+    k.setNama(view.tfNama.getText());
+    k.setPhoto_url(view.tfPhotoUrl.getText());
+    k.setDescription(view.tfDescription.getText());
+    k.setNo_urut(noUrut);
+
+    dao.insert(k);
+    loadTable();
+    reset();
+    JOptionPane.showMessageDialog(view, "Data berhasil diinsert.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+}
+
+
     public void update() {
+        if (view.tfId.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Data belum dipilih!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String noUrut = view.tfNoUrut.getText().trim();
+        int currentId = Integer.parseInt(view.tfId.getText());
+
+        // Cek duplikat no_urut dengan pengecualian id yang sedang diupdate
+        for (ModelKandidat k : dao.getAll()) {
+            if (k.getNo_urut().equalsIgnoreCase(noUrut) && k.getId() != currentId) {
+                JOptionPane.showMessageDialog(view, "Nomor urut sudah digunakan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
         ModelKandidat k = new ModelKandidat();
-        k.setId(Integer.parseInt(view.tfId.getText()));
+        k.setId(currentId);
         k.setNama(view.tfNama.getText());
         k.setPhoto_url(view.tfPhotoUrl.getText());
         k.setDescription(view.tfDescription.getText());
-        k.setNo_urut(view.tfNoUrut.getText());
+        k.setNo_urut(noUrut);
 
         dao.update(k);
         loadTable();
         reset();
+        JOptionPane.showMessageDialog(view, "Data berhasil diupdate.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void delete() {
-        int id = Integer.parseInt(view.tfId.getText());
-        dao.delete(id);
-        loadTable();
-        reset();
-    }
+      if (view.tfId.getText().trim().isEmpty()) {
+          JOptionPane.showMessageDialog(view, "Data belum dipilih!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+          return;
+      }
+
+      int confirm = JOptionPane.showConfirmDialog(view, "Yakin ingin menghapus data ini?", "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+      if (confirm == JOptionPane.YES_OPTION) {
+          try {
+              int id = Integer.parseInt(view.tfId.getText());
+              dao.delete(id);  // <- method ini sekarang bisa melempar SQLException
+              loadTable();
+              reset();
+              JOptionPane.showMessageDialog(view, "Data berhasil dihapus.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+          } catch (SQLException e) {
+              // Ini tangkap error foreign key constraint failure dan tampilkan pesan
+              if (e.getMessage().toLowerCase().contains("foreign key constraint")) {
+                  JOptionPane.showMessageDialog(view, "Kandidat sudah dipilih, tidak bisa menghapus data!", "Error", JOptionPane.ERROR_MESSAGE);
+              } else {
+                  JOptionPane.showMessageDialog(view, "Error saat menghapus data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+              }
+          } catch (NumberFormatException e) {
+              JOptionPane.showMessageDialog(view, "ID harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
+          }
+      }
+  }
+
 
     public void reset() {
         view.tfId.setText("");

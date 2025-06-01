@@ -50,17 +50,19 @@ public class DAOKandidat implements InterfaceDAOKandidat{
     }
 
     @Override
-    public void delete(int id) {
-        try {
-            String query = "DELETE FROM candidates WHERE id_candidate=?;";
-            PreparedStatement stmt = Connector.Connect().prepareStatement(query);
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException e) {
-            System.out.println("Delete Kandidat Failed! (" + e.getMessage() + ")");
-        }
+    public void delete(int id) throws SQLException {
+    try {
+        String query = "DELETE FROM candidates WHERE id_candidate=?";
+        PreparedStatement stmt = Connector.Connect().prepareStatement(query);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+        stmt.close();
+    } catch (SQLException e) {
+        System.out.println("Delete Kandidat Failed! (" + e.getMessage() + ")");
+        throw e;  // Lempar ulang exception supaya controller bisa tangkap
     }
+}
+
 
     @Override
     public List<ModelKandidat> getAll() {

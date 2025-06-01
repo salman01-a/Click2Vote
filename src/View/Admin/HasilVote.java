@@ -32,27 +32,29 @@ public class HasilVote extends JFrame{
         setLayout(new BorderLayout(10, 10));
         
         
-        Color baseColor = new Color(138, 43, 226);        // Ungu utama
-        Color hoverColor = new Color(75, 0, 130);
+
+        Color baseColor = new Color(111, 0, 162);
+        Color hoverColor = new Color(140, 0, 190);
+
 
 // Panel Navbar
         JPanel navbar = new JPanel(null); // pakai null layout agar bisa pakai setBounds
         navbar.setPreferredSize(new Dimension(700, 50));
         navbar.setBackground(baseColor);
         
-         JLabel logo = new JLabel("Admin");
+         JLabel logo = new JLabel("Click2Vote-Admin");
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
-        logo.setBounds(20, 15, 100, 20);
-        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        logo.setBounds(20, 15, 150, 20);
         navbar.add(logo);
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
         logo.addMouseListener(new MouseAdapter() {
-            @Override
+        @Override
             public void mouseClicked(MouseEvent e) {
-                // Buka halaman dashboard
-                new Dashboard2().setVisible(true);
-                // Tutup halaman kandidat saat ini
-                dispose();
+                new Dashboard2().setVisible(true); // Buka halaman Kandidat2
+                dispose(); // Tutup halaman saat ini
             }
         });
 // Tambahkan tombol navigasi

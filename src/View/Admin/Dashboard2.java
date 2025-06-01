@@ -11,8 +11,10 @@ import java.awt.event.*;
  */
 public class Dashboard2 extends JFrame {
 
+    JLabel desc = new JLabel("Selamat Datang Admin");
     public Dashboard2() {
-        setTitle("Dashboard Admin - Click2Vote");
+        setTitle("Data Kandidat");
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(830, 700);
         setLocationRelativeTo(null);
@@ -59,10 +61,52 @@ public class Dashboard2 extends JFrame {
         navButton.setBounds(x, 10, 100, 30);
         navButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+   
+        Color baseColor = new Color(111, 0, 162);
+        Color hoverColor = new Color(140, 0, 190);
+
+        JPanel navbar = new JPanel(null); // pakai null layout agar bisa pakai setBounds
+        navbar.setPreferredSize(new Dimension(700, 50));
+        navbar.setBackground(baseColor);
+
+        JLabel logo = new JLabel("Click2Vote-Admin");
+        logo.setForeground(Color.WHITE);
+        logo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        logo.setBounds(20, 15, 150, 20);
+        navbar.add(logo);
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
+        logo.addMouseListener(new MouseAdapter() {
+        @Override
+            public void mouseClicked(MouseEvent e) {
+                new Dashboard2().setVisible(true); // Buka halaman Kandidat2
+                dispose(); // Tutup halaman saat ini
+            }
+        });
+        
+
+// Tambahkan tombol navigasi
+        String[] navItems = {"Logout", "Hasil Voting", "Daftar Pemilih", "Kandidat"};
+        int x = 725; // mulai dari kanan
+        for (String item : navItems) {
+            JButton navButton = new JButton(item);
+            navButton.setFocusPainted(false);
+            navButton.setBackground(baseColor);
+            navButton.setForeground(Color.WHITE);
+            navButton.setBorder(null);
+            navButton.setFont(new Font("SansSerif", Font.BOLD, 12));
+            navButton.setBounds(x, 10, 100, 30);
+            navButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            String action = item; // harus final untuk lambda
+            navButton.addActionListener(e -> {
+                System.out.println(action + " diklik!");
+                if (action.equals("Logout")) {
+
         navButton.addActionListener(e -> {
             switch (item) {
                 case "Logout":
+
                     int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) System.exit(0);
                     break;
