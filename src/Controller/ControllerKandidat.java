@@ -75,50 +75,24 @@ import javax.swing.table.DefaultTableModel;
    }
 
     public void insert() {
-    String noUrut = view.tfNoUrut.getText().trim();
-
-    // Cek duplikat no_urut
-    for (ModelKandidat k : dao.getAll()) {
-        if (k.getNo_urut().equalsIgnoreCase(noUrut)) {
-            JOptionPane.showMessageDialog(view, "Nomor urut sudah digunakan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-    }
-
-    ModelKandidat k = new ModelKandidat();
-    k.setNama(view.tfNama.getText());
-    k.setPhoto_url(view.tfPhotoUrl.getText());
-    k.setDescription(view.tfDescription.getText());
-    k.setNo_urut(noUrut);
-
-    dao.insert(k);
-    loadTable();
-    reset();
-}
-
-    public void update() {
-        if (view.tfId.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Data belum dipilih!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String noUrut = view.tfNoUrut.getText().trim();
-        int currentId = Integer.parseInt(view.tfId.getText());
-
-        // Cek duplikat no_urut dengan pengecualian id yang sedang diupdate
-        for (ModelKandidat k : dao.getAll()) {
-            if (k.getNo_urut().equalsIgnoreCase(noUrut) && k.getId() != currentId) {
-                JOptionPane.showMessageDialog(view, "Nomor urut sudah digunakan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-        }
-
         ModelKandidat k = new ModelKandidat();
-        k.setId(currentId);
         k.setNama(view.tfNama.getText());
         k.setPhoto_url(view.tfPhotoUrl.getText());
         k.setDescription(view.tfDescription.getText());
-        k.setNo_urut(noUrut);
+        k.setNo_urut(view.tfNoUrut.getText());
+       
+        dao.insert(k);
+        loadTable();
+        reset();
+    }
+
+    public void update() {
+        ModelKandidat k = new ModelKandidat();
+        k.setId(Integer.parseInt(view.tfId.getText()));
+        k.setNama(view.tfNama.getText());
+        k.setPhoto_url(view.tfPhotoUrl.getText());
+        k.setDescription(view.tfDescription.getText());
+        k.setNo_urut(view.tfNoUrut.getText());
 
         dao.update(k);
         loadTable();
@@ -126,17 +100,11 @@ import javax.swing.table.DefaultTableModel;
     }
 
     public void delete() {
-        if (view.tfId.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Data belum dipilih!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
         int id = Integer.parseInt(view.tfId.getText());
         dao.delete(id);
         loadTable();
         reset();
     }
-
 
     public void reset() {
         view.tfId.setText("");
