@@ -53,13 +53,15 @@ public class DetailKandidat extends JFrame {
                 } else if (item.equals("Kandidat")) {
                     new Kandidat(id_user);
                     dispose();
-
-
                 } else if (item.equals("Pilih")) {
                     new Pilih(id_user);
                     dispose();
-
-
+                } else if (item.equals("Logout")) {
+                    int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        new View.LoginPage();
+                        dispose();
+                    }
                 } 
             });
             

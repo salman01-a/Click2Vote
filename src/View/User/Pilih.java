@@ -62,6 +62,12 @@ public class Pilih extends JFrame {
                     new Dashboard(id_user);
                 } else if (item.equals("Kandidat")) {
                     new Kandidat(id_user);
+                } else if (item.equals("Logout")) {
+                    int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        new View.LoginPage();
+                        dispose();
+                    }
                 }
             });
 
@@ -151,16 +157,23 @@ public class Pilih extends JFrame {
             cardContainer.add(card);
         }
 
-        JScrollPane scrollPane = new JScrollPane(cardContainer);
-        scrollPane.setBorder(null); // opsional
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // untuk smooth scroll
+         // Scroll pane yang membungkus cardContainer
+JScrollPane scrollPane = new JScrollPane(cardContainer);
+scrollPane.setBorder(null); // opsional, agar tidak ada garis tepi
+scrollPane.getVerticalScrollBar().setUnitIncrement(16); // agar scroll lebih halus
+scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-// ⬇️ Masukkan JScrollPane ke content panel
-        content.add(scrollPane, BorderLayout.CENTER);
-        content.add(cardContainer, BorderLayout.CENTER);
-        mainPanel.add(content, BorderLayout.CENTER);
-        setContentPane(mainPanel);
-        setVisible(true);
+// Tambahkan scroll pane ke dalam content panel
+content.add(scrollPane, BorderLayout.CENTER);
+
+// Tambahkan content ke main panel, lalu set sebagai konten utama
+mainPanel.add(content, BorderLayout.CENTER);
+setContentPane(mainPanel);
+setVisible(true);
+
+    
 
     }
 

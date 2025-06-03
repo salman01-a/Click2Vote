@@ -85,7 +85,7 @@ public class HasilVote extends JFrame{
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
                     dispose();
-                }
+                } 
             });
 
             navButton.addMouseListener(new MouseAdapter() {

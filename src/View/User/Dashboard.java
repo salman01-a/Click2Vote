@@ -45,7 +45,8 @@ public class Dashboard extends JFrame {
                 if (item.equals("Logout")) {
                     int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        System.exit(0);
+                        new View.LoginPage();
+                        dispose();
                     }
                 } else if (item.equals("Kandidat")) {
                     new Kandidat(id_user);
@@ -129,7 +130,14 @@ public class Dashboard extends JFrame {
                 pilihButton.setForeground(baseColor);
             }
         });
-
+        pilihButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                  new Pilih(id_user);
+                     dispose();
+            }
+            
+        });
         mainPanel.add(pilihButton);
 
         // Gambar ilustrasi
