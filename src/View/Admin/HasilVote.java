@@ -6,7 +6,7 @@ package View.Admin;
 
 import Controller.ControllerVoter;
 import Model.HasilVotes.ModelHasilVotes;
-import Model.HasilVotes.ModelTableHasil;
+import Model.HasilVotes.ModelTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -80,7 +80,7 @@ public class HasilVote extends JFrame{
                     }
                 } else if (action.equals("Kandidat")) {
                     View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
-                    new Controller.ControllerKandidat(view);
+//                    new Controller.ControllerKandidat(view);
                     dispose();
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
@@ -110,7 +110,7 @@ public class HasilVote extends JFrame{
         ControllerVoter controller = new ControllerVoter(this);
         List<ModelHasilVotes> hasil = controller.getHasilVoting();
 
-        JTable table = new JTable(new ModelTableHasil(hasil));
+        JTable table = new JTable(new ModelTable(hasil));
         table.setRowHeight(25);
         table.setFont(new Font("SansSerif", Font.PLAIN, 14));
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));

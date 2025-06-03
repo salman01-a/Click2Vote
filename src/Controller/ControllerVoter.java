@@ -31,19 +31,22 @@ public class ControllerVoter {
         this.daoHasil = new DAOHasilVotes();
     }
 
-    public List<ModelVotes> getAllVotes() {
-        return daoVotes.getAll();
-    }
+    
     
     public ControllerVoter(Pilih pilih) {
         this.pilih = pilih;
         this.daoVotes = new DAOVotes();
     }
     
+    public List<ModelVotes> getAllVotes() {
+        return daoVotes.getAll();
+    }
+    
     
     public List<ModelHasilVotes> getHasilVoting() {
     return daoHasil.getHasilVoting();
 }
+    
     
     public void Vote(int id_candidates, int id_user){
         System.out.println("ID USEER : "+id_user);   

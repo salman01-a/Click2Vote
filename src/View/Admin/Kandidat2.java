@@ -30,6 +30,9 @@ public class Kandidat2 extends JFrame {
         setSize(830, 700);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
+        
+        
+//        new Controller.ControllerKandidat(this);
 
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));

@@ -196,7 +196,7 @@ import java.sql.SQLException;
                 ImageIcon icon = new ImageIcon(new ImageIcon(destPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
                 view.lblImagePreview.setIcon(icon);
             } catch (Exception ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
                 JOptionPane.showMessageDialog(view, "Gagal upload gambar.");
             }
         }

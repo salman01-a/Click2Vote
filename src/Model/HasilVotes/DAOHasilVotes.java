@@ -41,7 +41,7 @@ List<ModelHasilVotes> list = new ArrayList<>();
         stmt.close();
         conn.close();
     } catch (SQLException e) {
-        e.printStackTrace();
+        System.out.println(e);
     }
     return list;
 }
