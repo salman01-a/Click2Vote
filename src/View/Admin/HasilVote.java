@@ -80,8 +80,9 @@ public class HasilVote extends JFrame{
                     }
                 } else if (action.equals("Kandidat")) {
                     View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
-//                    new Controller.ControllerKandidat(view);
-                    dispose();
+                    new Controller.ControllerKandidat(view);
+                    dispose(); 
+                    
                 } else if (action.equals("Daftar Pemilih")) {
                     new ListVoter().setVisible(true);
                     dispose();
@@ -89,7 +90,7 @@ public class HasilVote extends JFrame{
             });
 
             navButton.addMouseListener(new MouseAdapter() {
-                @Override
+                @Override   
                 public void mouseEntered(MouseEvent e) {
                     navButton.setBackground(hoverColor);
                 }
