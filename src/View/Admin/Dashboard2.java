@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package View.Admin;
 
 import Controller.ControllerKandidat;
@@ -5,6 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ *
+ * @author salmanfaris
+ */
 public class Dashboard2 extends JFrame {
 
     public Dashboard2() {
@@ -56,7 +64,8 @@ public class Dashboard2 extends JFrame {
                 switch (item) {
                     case "Logout":
                         int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
-                        if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+                        if (confirm == JOptionPane.YES_OPTION) new View.LoginPage();
+                        dispose();
                         break;
                     case "Kandidat":
                         new ControllerKandidat(new Kandidat2());

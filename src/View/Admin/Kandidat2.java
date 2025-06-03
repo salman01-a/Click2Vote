@@ -1,12 +1,21 @@
 package View.Admin;
 
+import Controller.ControllerKandidat;
+import Model.Kandidat.ModelKandidat;
+import Model.Kandidat.ModelTable;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.File;
+import java.util.List;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 public class Kandidat2 extends JFrame {
+
+    public static int YES_OPTION;
 
     public JTextField tfId = new JTextField();
     public JTextField tfNama = new JTextField();
@@ -21,22 +30,29 @@ public class Kandidat2 extends JFrame {
     public JButton btnUpload = new JButton("Upload");
 
     public JTable table;
-    public DefaultTableModel tableModel;
+    private ModelTable tableModel;
+
     public JLabel lblImagePreview = new JLabel();
 
+ 
+    ControllerKandidat controller;
+
     public Kandidat2() {
+
         setTitle("Data Kandidat");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(830, 700);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
-        
-        
-//        new Controller.ControllerKandidat(this);
 
+        // Buat instance controller
+        controller = new ControllerKandidat(this);
+
+        // Susun layout
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
+        // Panel atas: Form + Preview Gambar
         JPanel topPanel = new JPanel(null);
         topPanel.setPreferredSize(new Dimension(850, 300));
 
@@ -48,115 +64,22 @@ public class Kandidat2 extends JFrame {
         imagePanel.setBounds(540, 10, 150, 220);
         topPanel.add(imagePanel);
 
-//        JPanel buttonPanel = createButtonPanel();
-        JPanel tablePanel = createTablePanel();
-
         mainPanel.add(topPanel, BorderLayout.NORTH);
-//        mainPanel.add(buttonPanel, BorderLayout.CENTER);
+
+        // Panel bawah: Tabel Kandidat
+        JPanel tablePanel = createTablePanel();
         mainPanel.add(tablePanel, BorderLayout.SOUTH);
 
         add(mainPanel, BorderLayout.CENTER);
 
-        Color baseColor = new Color(111, 0, 162);
-        Color hoverColor = new Color(140, 0, 190);
 
+        add(createNavbar(), BorderLayout.NORTH);
 
-        JPanel navbar = new JPanel(null);
-        navbar.setPreferredSize(new Dimension(700, 50));
-        navbar.setBackground(baseColor);
+        attachListeners();
 
-        JLabel logo = new JLabel("Click2Vote-Admin");
-        logo.setForeground(Color.WHITE);
-        logo.setFont(new Font("SansSerif", Font.BOLD, 16));
-
-        logo.setBounds(20, 15, 150, 20);
-        navbar.add(logo);
-        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        logo.addMouseListener(new MouseAdapter() {
-        @Override
-            public void mouseClicked(MouseEvent e) {
-                new Dashboard2().setVisible(true); // Buka halaman Kandidat2
-                dispose(); // Tutup halaman saat ini
-            }
-        });
-
-
-
-        String[] navItems = {"Logout", "Hasil Voting", "Daftar Pemilih", "Kandidat"};
-        int x = 725;
-        for (String item : navItems) {
-            JButton navButton = new JButton(item);
-            navButton.setFocusPainted(false);
-            navButton.setBackground(baseColor);
-            navButton.setForeground(Color.WHITE);
-            navButton.setBorder(null);
-            navButton.setFont(new Font("SansSerif", Font.BOLD, 12));
-            navButton.setBounds(x, 10, 100, 30);
-            navButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-            String action = item;
-            navButton.addActionListener(e -> {
-                System.out.println(action + " diklik!");
-                if (action.equals("Logout")) {
-                    int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-                    }
-                } else if (action.equals("Kandidat")) {
-                    new Kandidat2().setVisible(true);
-                    dispose();
-
-                } else if (action.equals("Daftar Pemilih")) {
-                    new ListVoter().setVisible(true);
-                    dispose();
-                } else if (action.equals("Hasil Voting")) {
-                    new HasilVote().setVisible(true);
-                    dispose();
-
-                }
-            });
-
-            navButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    navButton.setBackground(hoverColor);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    navButton.setBackground(baseColor);
-                }
-            });
-
-            navbar.add(navButton);
-            x -= 95;
-        }
-
-// Tambahkan navbar ke frame
-        add(navbar, BorderLayout.NORTH);
         setVisible(true);
 
-        btnUpload.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String path = fileChooser.getSelectedFile().getAbsolutePath();
-                tfPhotoUrl.setText(path);
-                setImagePreview(path);
-            }
-        });
-
-       
-
-        btnDelete.addActionListener(e -> {
-            if (!tfId.getText().isEmpty()) {
-                int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-                if (confirm != JOptionPane.YES_OPTION) {
-                    return;
-                }
-            }
-        });
+        loadTableData();
     }
 
     private JPanel createFormPanel() {
@@ -168,7 +91,6 @@ public class Kandidat2 extends JFrame {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        // Label dan field
         JLabel lblId = new JLabel("ID:");
         JLabel lblNama = new JLabel("Nama:");
         JLabel lblPhoto = new JLabel("Photo Path:");
@@ -177,16 +99,20 @@ public class Kandidat2 extends JFrame {
 
         lblId.setBounds(20, 20, 100, 25);
         tfId.setBounds(130, 20, 250, 25);
+//        tfId.setEditable(false); 
         lblNama.setBounds(20, 60, 100, 25);
         tfNama.setBounds(130, 60, 250, 25);
+
         lblPhoto.setBounds(20, 100, 100, 25);
         tfPhotoUrl.setBounds(130, 100, 250, 25);
+
         lblDeskripsi.setBounds(20, 140, 100, 25);
         tfDescription.setBounds(130, 140, 250, 25);
+
         lblNoUrut.setBounds(20, 180, 100, 25);
         tfNoUrut.setBounds(130, 180, 250, 25);
 
-        // Tambah ke panel
+        // Tambahkan komponen label dan textfield
         formPanel.add(lblId);
         formPanel.add(tfId);
         formPanel.add(lblNama);
@@ -198,7 +124,7 @@ public class Kandidat2 extends JFrame {
         formPanel.add(lblNoUrut);
         formPanel.add(tfNoUrut);
 
-        // Tambahkan tombol CRUD ke form
+        // Tombol CRUD: Insert, Update, Delete, Reset
         btnInsert.setBounds(20, 230, 80, 30);
         btnUpdate.setBounds(110, 230, 80, 30);
         btnDelete.setBounds(200, 230, 80, 30);
@@ -220,6 +146,7 @@ public class Kandidat2 extends JFrame {
         return formPanel;
     }
 
+    /** Membentuk panel untuk preview gambar + tombol Upload */
     private JPanel createImagePanel() {
         JPanel panel = new JPanel(null);
         panel.setBorder(BorderFactory.createTitledBorder("Preview Gambar"));
@@ -236,29 +163,215 @@ public class Kandidat2 extends JFrame {
         return panel;
     }
 
+
     private JPanel createTablePanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Daftar Kandidat"));
 
-        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "photo_url", "Deskripsi", "No Urut"}, 0);
+
+        tableModel = new ModelTable(List.of()); 
         table = new JTable(tableModel);
         table.setRowHeight(30);
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(0, 200));
-
         panel.add(scrollPane, BorderLayout.CENTER);
+
         return panel;
     }
 
-    public void setImagePreview(String imagePath) {
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image img = icon.getImage().getScaledInstance(
-                lblImagePreview.getWidth(),
-                lblImagePreview.getHeight(),
-                Image.SCALE_SMOOTH
-        );
-        lblImagePreview.setIcon(new ImageIcon(img));
+    /** Membentuk JPanel navbar (Logout, Hasil Voting, Daftar Pemilih, Kandidat) */
+    private JPanel createNavbar() {
+        Color baseColor = new Color(111, 0, 162);
+        Color hoverColor = new Color(140, 0, 190);
+
+        JPanel navbar = new JPanel(null);
+        navbar.setPreferredSize(new Dimension(700, 50));
+        navbar.setBackground(baseColor);
+
+        JLabel logo = new JLabel("Click2Vote-Admin");
+        logo.setForeground(Color.WHITE);
+        logo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        logo.setBounds(20, 15, 150, 20);
+        logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        logo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new Dashboard2().setVisible(true);
+                dispose();
+            }
+        });
+        navbar.add(logo);
+
+        String[] navItems = {"Logout", "Hasil Voting", "Daftar Pemilih", "Kandidat"};
+        int x = 725;
+        for (String item : navItems) {
+            JButton navButton = new JButton(item);
+            navButton.setFocusPainted(false);
+            navButton.setBackground(baseColor);
+            navButton.setForeground(Color.WHITE);
+            navButton.setBorder(null);
+            navButton.setFont(new Font("SansSerif", Font.BOLD, 12));
+            navButton.setBounds(x, 10, 100, 30);
+            navButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            navButton.addActionListener(e -> {
+                switch (item) {
+                    case "Logout":
+                        int confirm = confirmDialog("Yakin ingin logout?");
+                        if (confirm == YES_OPTION) new View.LoginPage();
+                        dispose();
+                        break;
+                    case "Kandidat":
+
+                        break;
+                    case "Daftar Pemilih":
+                        new ListVoter().setVisible(true);
+                        dispose();
+                        break;
+                    case "Hasil Voting":
+                        new HasilVote().setVisible(true);
+                        dispose();
+                        break;
+                }
+            });
+
+            navButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    navButton.setBackground(hoverColor);
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    navButton.setBackground(baseColor);
+                }
+            });
+
+            navbar.add(navButton);
+            x -= 95;
+        }
+
+        return navbar;
+    }
+
+    /** Mendaftarkan semua listener (ActionListener dan MouseListener) */
+    private void attachListeners() {
+
+        btnUpload.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg"));
+            int result = chooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = chooser.getSelectedFile();
+                String destPath = "src/Assets/FotoKandidat/" + selectedFile.getName();
+
+                try {
+                    // Copy file ke folder tujuan
+                    java.nio.file.Files.copy(
+                        selectedFile.toPath(),
+                        new File(destPath).toPath(),
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                    );
+                    tfPhotoUrl.setText(destPath);
+
+                    // Tampilkan preview
+                    ImageIcon icon = new ImageIcon(
+                        new ImageIcon(destPath)
+                            .getImage()
+                            .getScaledInstance(100, 100, Image.SCALE_SMOOTH)
+                    );
+                    lblImagePreview.setIcon(icon);
+                } catch (Exception ex) {
+                    showError("Gagal upload gambar.");
+                }
+            }
+        });
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = table.getSelectedRow();
+                if (row < 0) return;
+
+                // Ambil data langsung dari model
+                Object id    = tableModel.getValueAt(row, 0);
+                Object nama  = tableModel.getValueAt(row, 1);
+                Object url   = tableModel.getValueAt(row, 2);
+                Object desc  = tableModel.getValueAt(row, 3);
+                Object noUrut = tableModel.getValueAt(row, 4);
+
+                tfId.setText(id.toString());
+                tfNama.setText(nama.toString());
+                tfPhotoUrl.setText(url.toString());
+                tfDescription.setText(desc.toString());
+                tfNoUrut.setText(noUrut.toString());
+
+                if (!url.toString().isBlank()) {
+                    ImageIcon icon = new ImageIcon(
+                        new ImageIcon(url.toString())
+                            .getImage()
+                            .getScaledInstance(100, 100, Image.SCALE_SMOOTH)
+                    );
+                    lblImagePreview.setIcon(icon);
+                }
+            }
+        });
+
+        // 3. Listener tombol Insert → panggil controller.insertKandidat(), lalu refresh tabel dan reset form
+        btnInsert.addActionListener(e -> {
+            controller.insert();
+            loadTableData();
+            resetForm();
+        });
+
+        // 4. Listener tombol Update → panggil controller.updateKandidat(), lalu refresh tabel dan reset form
+        btnUpdate.addActionListener(e -> {
+            controller.update();
+            loadTableData();
+            resetForm();
+        });
+
+        // 5. Listener tombol Delete → panggil controller.deleteKandidat(), lalu refresh tabel dan reset form
+        btnDelete.addActionListener(e -> {
+            controller.delete();
+            loadTableData();
+            resetForm();
+        });
+
+        btnReset.addActionListener(e -> resetForm());
+    }
+
+    private void loadTableData() {
+        List<ModelKandidat> daftar = controller.getAllKandidat();
+        tableModel = new ModelTable(daftar);
+        table.setModel(tableModel);
+        table.setRowHeight(30);
+        table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+    }
+
+    private void resetForm() {
+        tfId.setText("");
+        tfNama.setText("");
+        tfPhotoUrl.setText("");
+        tfDescription.setText("");
+        tfNoUrut.setText("");
+        lblImagePreview.setIcon(null);
+    }
+
+    public void showWarning(String pesan) {
+        JOptionPane.showMessageDialog(this, pesan, "Peringatan", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void showInfo(String pesan) {
+        JOptionPane.showMessageDialog(this, pesan, "Sukses", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showError(String pesan) {
+        JOptionPane.showMessageDialog(this, pesan, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public int confirmDialog(String pesan) {
+        return JOptionPane.showConfirmDialog(this, pesan, "Konfirmasi", JOptionPane.YES_NO_OPTION);
     }
 }
