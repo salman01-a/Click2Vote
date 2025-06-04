@@ -92,6 +92,7 @@ public class Kandidat extends JFrame {
             
             String rawPath = kandidat.getPhoto_url(); // contoh: "src/Assets/FotoKandidat/vote.png"
             final String cleanedPath = rawPath.replaceFirst("src/", "");
+            System.out.println(cleanedPath);
             try {
                 
                 ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(cleanedPath));

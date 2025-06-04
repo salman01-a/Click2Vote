@@ -96,14 +96,16 @@ public class Dashboard extends JFrame {
 
         // Deskripsi
         JTextArea description = new JTextArea(
-                "Pemilihan Umum Desa adalah momen penting untuk menentukan\n" +
-                "masa depan desa kita bersama. Dengan satu suara, Anda turut\n" +
-                "serta membangun kebijakan yang berpihak pada kemajuan,\n" +
-                "kesejahteraan, dan keadilan bagi semua warga.\n\n" +
-                "Jangan biarkan kesempatan ini berlalu begitu saja! Pilih dengan bijak,\n" +
-                "pilih untuk perubahan yang nyata.\n\n" +
-                "Ayo gunakan hak pilih Anda, karena setiap suara adalah langkah\n" +
-                "menuju masa depan yang lebih cerah untuk desa tercinta!");
+                "Click2Vote adalah inovasi digital dalam Pemilihan Umum Desa yang membawa\n" +
+        "kemudahan, keamanan, dan transparansi ke dalam genggaman Anda. Melalui\n" +
+        "sistem ini, warga dapat memberikan suara secara cepat, ringkas, dan dinamis,\n" +
+        "tanpa harus mengantri atau hadir secara fisik di TPS.\n\n" +
+        "Dengan satu klik, Anda turut andil dalam menentukan arah pembangunan dan\n" +
+        "kebijakan desa. Click2Vote memastikan setiap suara tercatat dengan adil\n" +
+        "dan akurat, demi mewujudkan desa yang lebih maju, sejahtera, dan demokratis.\n\n" +
+        "Jangan lewatkan kesempatan untuk membuat perubahan nyata.\n" +
+        "Gunakan hak pilih Anda melalui Click2Vote — karena masa depan desa\n" +
+        "dimulai dari satu suara Anda!");
         description.setFont(new Font("SansSerif", Font.PLAIN, 15));
         description.setForeground(Color.WHITE);
         description.setBackground(baseColor);

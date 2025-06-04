@@ -1,14 +1,16 @@
 package Model.Votes;
 
+import java.util.Date;
+
 public class ModelVotes {
     private int id;
     private String pemilih;
-    private String kandidat;
+    private Date waktu;
 
-    public ModelVotes(int id, String pemilih, String kandidat) {
+    public ModelVotes(int id, String pemilih, Date waktu) {
         this.id = id;
         this.pemilih = pemilih;
-        this.kandidat = kandidat;
+        this.waktu = waktu;
     }
 
     public int getId() {
@@ -19,7 +21,7 @@ public class ModelVotes {
         return pemilih;
     }
 
-    public String getKandidat() {
-        return kandidat;
+    public Date getWaktu() {
+        return waktu;
     }
 }

@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModelTable extends AbstractTableModel{
 private final List<ModelVotes> data;
-    private final String[] columnNames = {"No", "Nama Pemilih", "Kandidat Terpilih"};
+    private final String[] columnNames = {"No", "Nama Pemilih", "Waktu Memilih"};
 
     public ModelTable(List<ModelVotes> data) {
         this.data = data;
@@ -35,7 +35,7 @@ private final List<ModelVotes> data;
         return switch (col) {
             case 0 -> row + 1; // Urutan baris, bukan id_vote
             case 1 -> vote.getPemilih();
-            case 2 -> vote.getKandidat();
+            case 2 -> vote.getWaktu();
             default -> null;
         };
     }

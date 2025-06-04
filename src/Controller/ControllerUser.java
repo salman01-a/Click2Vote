@@ -36,7 +36,7 @@ public class ControllerUser {
 
     public void Login() {
         try {
-            JOptionPane.showMessageDialog(Login, "Coba");
+//            JOptionPane.showMessageDialog(Login, "Coba");
             String Name = Login.getUser();
             String Password = Login.getPass();
             ModelUser user = daoUser.Login(Name, Password);
