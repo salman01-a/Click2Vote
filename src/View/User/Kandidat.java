@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package View.User;
     
 import Controller.ControllerKandidat;
@@ -6,6 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+
+/**
+ *
+ * @author Lenovo
+ */
 public class Kandidat extends JFrame {
     public Kandidat(int id_user) {
         setTitle("Temui Para Kandidat");
@@ -42,6 +51,7 @@ public class Kandidat extends JFrame {
                 System.out.println(item + " diklik!");
                 if (item.equals("Home")) {
                     new Dashboard(id_user);
+                    dispose();
                 } else if (item.equals("Pilih")) {
                     new Pilih(id_user);
                     dispose();

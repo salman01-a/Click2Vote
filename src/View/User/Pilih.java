@@ -60,8 +60,10 @@ public class Pilih extends JFrame {
                 // Tambahkan navigasi jika dibutuhkan
                 if (item.equals("Home")) {
                     new Dashboard(id_user);
+                    dispose();
                 } else if (item.equals("Kandidat")) {
                     new Kandidat(id_user);
+                    dispose();
                 } else if (item.equals("Logout")) {
                     int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {

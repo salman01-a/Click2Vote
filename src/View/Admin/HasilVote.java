@@ -76,7 +76,8 @@ public class HasilVote extends JFrame{
                 if (action.equals("Logout")) {
                     int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin logout?", "Logout", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        System.exit(0);
+                        new View.LoginPage();
+                        dispose();
                     }
                 } else if (action.equals("Kandidat")) {
                     View.Admin.Kandidat2 view = new View.Admin.Kandidat2();
